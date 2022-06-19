@@ -25,12 +25,12 @@ services:
     volumes:
       - ./backend:/app
     command: rails server -b 0.0.0.0
-  front: 
+  frontend: 
     build:
-      context: ./front/
+      context: ./frontend/
       dockerfile: Dockerfile
     volumes:
-      - ./front/app:/usr/src/app
+      - ./frontend/app:/usr/src/app
     command: 'yarn dev'
     ports:
       - "8000:3000"
