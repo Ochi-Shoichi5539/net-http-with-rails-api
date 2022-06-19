@@ -13,17 +13,17 @@ services:
       - 4306:3306
     volumes:
       - mysql-db:/var/lib/mysql
-  api:
+  backend:
     tty: true
     depends_on:
       - db
     build:
-      context: ./api/
+      context: ./backend/
       dockerfile: Dockerfile
     ports:
       - 3000:3000
     volumes:
-      - ./api:/app
+      - ./backend:/app
     command: rails server -b 0.0.0.0
   front: 
     build:
