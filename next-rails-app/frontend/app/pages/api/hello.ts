@@ -1,5 +1,9 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import React from 'react'
+import {AppProps} from 'next/app';
+import '../styles/globals.css';
 
-export default function handler(req, res) {
-  res.status(200).json({ name: 'John Doe' })
+const MyApp = ({ Component, pageProps }: AppProps) => {
+  return <Component {...pageProps} />
 }
+
+export default MyApp

@@ -1,24 +1,33 @@
-const Home = (props) => {
+import React, { FC } from "react";
+import { GetStaticProps } from "next";
+
+type Post = {
+  id: number;
+  title: string;
+}
+
+type Props = {
+  posts: Post[];
+}
+
+const Home: FC<Props> = (props) => {
   return (
     <div>
-      <h2>
-          POSTの一覧
-        </h2>
-        <table>
-          {props.posts.map((post) =>
-            <tr>
-              <td>{post.id}.</td>
-              <td>{post.title}</td>
-            </tr>
-          )}
-        </table>
+      <h2>POSTの一覧</h2>
+      <table>
+	{props.posts.map((post) =>
+	  <tr>
+	    <td>{post.id}.</td>
+	    <td>{post.title}</td>
+	  </tr>
+        )}
+      </table>
     </div>
   )
 }
 
-export const getStaticProps = async () => {
-  // URLはlocalhostではなくapiとなる
-  const response = await fetch("http://backend:3000/posts", {method: "GET"});
+export const getStaticProps: GetStaticProps = async context => {
+  const response = await fetch("http://api:3000/posts", {method: "GET"});
   const json = await response.json();
 
   return {
