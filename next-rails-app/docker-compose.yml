@@ -21,10 +21,10 @@ services:
       context: ./backend/
       dockerfile: Dockerfile
     ports:
-      - 3000:3000
+      - 3010:3010
     volumes:
       - ./backend:/app
-    command: rails server -b 0.0.0.0
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3010 -b '0.0.0.0'"
   frontend: 
     build:
       context: ./frontend/
@@ -33,7 +33,7 @@ services:
       - ./frontend/app:/usr/src/app
     command: 'yarn dev'
     ports:
-      - "8000:3000"
+      - "8000:8000"
 volumes:
   mysql-db:
     driver: local
