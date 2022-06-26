@@ -1,36 +1,15 @@
-FROM ruby:3.0.2-alpine3.14
+FROM ruby:3.0.2
 
-ENV ROOT="/app/"
-ENV TZ=Asia/Tokyo
+RUN wget --quiet -O - /tmp/pubkey.gpg https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo 'deb http://dl.yarnpkg.com/debian/ stable main' > /etc/apt/sources.list.d/yarn.list && \
+    apt-get update -qq && apt-get install -y nodejs build-essential vim libpq-dev && \
+    apt-get install -y yarn 
 
-WORKDIR ${ROOT}
+RUN mkdir /app
 
-RUN apk add --update --no-cache \
-        bash \
-        less \
-        g++ \
-        gcompat \
-        git \
-        libc-dev \
-        libxml2-dev \
-        linux-headers \
-        make \
-        nodejs \
-        postgresql \
-        postgresql-dev \
-        tzdata \
-        yarn && \
-    apk add --virtual build-packs --no-cache \
-        build-base \
-        curl
+WORKDIR /app
 
-COPY Gemfile* ${ROOT}
+COPY Gemfile /app/Gemfile
+COPY Gemfile.lock /app/Gemfile.lock
 
-RUN bundle install -j4
-RUN apk del build-packs
-
-COPY . ${ROOT}
-
-# Add a script to be executed every time the container starts.
-RUN set -e \
-    rm -f /app/tmp/pids/server.pid 
+RUN bundle install
